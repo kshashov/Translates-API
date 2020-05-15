@@ -1,0 +1,47 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    # H2
+    url: jdbc:h2:mem:testdb #file:~/testdb # mem:testdb
+    username: sa
+    password: password
+    platform: h2
+    driver-class-name: org.h2.Driver
+    # connection pool
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 3
+  #    initialization-mode: never
+  jpa:
+    #    properties:
+    #      javax:
+    #        persistence:
+    #          schema-generation:
+    #            create-source: metadata
+    #            scripts:
+    #              action: create
+    #              create-target: create.sql
+    hibernate:
+      ddl-auto: create #none
+      show-sql: false
+      dialect: org.hibernate.dialect.H2Dialect
+  #  security:
+  #    oauth2:
+  #      client:
+  #        registration:
+  #          google:
+  #            client-id: ENC(xrPLrs94xXjVK9qaodvRg3gwG/1mS5Gx5JJvBA036IIXmESCGSvNt2vEVlfrlC/InMhMk5f+ORldCL6LPiYcnOZsO00/mgoOlM8b3kCK79pvFAIJk7hAoNJxvlMbUhNJN23tuOX1I6qKYjcZl657iA==)
+  #            client-secret: ENC(+gR8pW9O4KEgbRKLHFgiDDBbXBAXp2KviE4lpGC/uo5YpIUFHT+HxukzYnePapT3sJ19ajvcXyvv1KcLIdp5gQ==)
+  #          github:
+  #            client-id: ENC(ZCJD2N0Dv4M0g0rwxoL/1ALEHvJcs8nldrnfRoQt4mqOnEyR9SCuCJAcQcFNc6vvJhhj1IidAYVRZs4K3q/s+A==)
+  #            client-secret: ENC(KNkDOygBNyteH2s4WDoQaNJ88FDht4G595CsV25PEogkQcbUDnUZaDZcF2RoJjP5dQBw18/691GyB07EW6TxcOtHiPQKVVypkxNad+CwUDI=)
+
+  flyway:
+    enabled: false
+
+jasypt:
+  encryptor:
+    bean: translatesStringEncryptor
