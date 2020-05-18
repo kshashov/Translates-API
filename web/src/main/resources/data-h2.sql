@@ -17,3 +17,5 @@ INSERT INTO roles_permissions (role_id, permission_id) VALUES (2, 1);
 INSERT INTO roles_permissions (role_id, permission_id) VALUES (3, 0);
 INSERT INTO roles_permissions (role_id, permission_id) VALUES (3, 1);
 INSERT INTO roles_permissions (role_id, permission_id) VALUES (3, 2);
+
+INSERT INTO users (id, email, name, role_id) VALUES (0, 'envoy93@gmail.com', 'user', 2);

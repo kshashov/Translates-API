@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "users", schema = "public", uniqueConstraints = {
         @UniqueConstraint(name = "users_unique_email", columnNames = "email")
 })
+@NamedEntityGraph(name = "User.permissions",
+        attributeNodes = {@NamedAttributeNode(value = "role", subgraph = "Role.permissions")},
+        subgraphs = {@NamedSubgraph(name = "Role.permissions", attributeNodes = @NamedAttributeNode("permissions"))})
 public class User implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

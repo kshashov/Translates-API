@@ -28,19 +28,28 @@ spring:
       ddl-auto: create #none
       show-sql: false
       dialect: org.hibernate.dialect.H2Dialect
-  #  security:
-  #    oauth2:
-  #      client:
-  #        registration:
-  #          google:
-  #            client-id: ENC(xrPLrs94xXjVK9qaodvRg3gwG/1mS5Gx5JJvBA036IIXmESCGSvNt2vEVlfrlC/InMhMk5f+ORldCL6LPiYcnOZsO00/mgoOlM8b3kCK79pvFAIJk7hAoNJxvlMbUhNJN23tuOX1I6qKYjcZl657iA==)
-  #            client-secret: ENC(+gR8pW9O4KEgbRKLHFgiDDBbXBAXp2KviE4lpGC/uo5YpIUFHT+HxukzYnePapT3sJ19ajvcXyvv1KcLIdp5gQ==)
-  #          github:
-  #            client-id: ENC(ZCJD2N0Dv4M0g0rwxoL/1ALEHvJcs8nldrnfRoQt4mqOnEyR9SCuCJAcQcFNc6vvJhhj1IidAYVRZs4K3q/s+A==)
-  #            client-secret: ENC(KNkDOygBNyteH2s4WDoQaNJ88FDht4G595CsV25PEogkQcbUDnUZaDZcF2RoJjP5dQBw18/691GyB07EW6TxcOtHiPQKVVypkxNad+CwUDI=)
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(ddn14RhBYeB45J4HODKlou6ifTZpBP2U169ETC2B9fWFqAiCBC6wNZpLEIBIbftyqBxEwC8ckLgXtxFIPE38zZ75Q10L44hMKUagcpKMY5HOjI8PckQCmRUoV71RrMTvISP3e+ZZT6Xif1kBv15gKQ==)
+            client-secret: ENC(oPHvjo6+vDq3anLHeheFeCqY1U3UKJH/SeSq5cM/yCsAZAmB8DHFfiIJTN5Zr1I7FxsDlr5Ff76MEyUAUs75vQ==)
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+  #         github:
+  #           client-id: ENC(ZCJD2N0Dv4M0g0rwxoL/1ALEHvJcs8nldrnfRoQt4mqOnEyR9SCuCJAcQcFNc6vvJhhj1IidAYVRZs4K3q/s+A==)
+  #           client-secret: ENC(KNkDOygBNyteH2s4WDoQaNJ88FDht4G595CsV25PEogkQcbUDnUZaDZcF2RoJjP5dQBw18/691GyB07EW6TxcOtHiPQKVVypkxNad+CwUDI=)
 
   flyway:
     enabled: false
+
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpirationMsec: 864000000
 
 jasypt:
   encryptor:

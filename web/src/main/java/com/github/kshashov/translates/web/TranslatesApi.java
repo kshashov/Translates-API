@@ -5,6 +5,7 @@ import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 //@EnableTransactionManagement
 //@EnableJpaRepositories(basePackageClasses = BaseRepo.class)
 //@EntityScan(basePackageClasses = {BaseEntity.class})
+@EnableConfigurationProperties(AppProperties.class)
 public class TranslatesApi {
 
     public static void main(String[] args) {
