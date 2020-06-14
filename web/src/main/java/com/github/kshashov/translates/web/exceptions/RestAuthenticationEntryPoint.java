@@ -1,7 +1,6 @@
-package com.github.kshashov.translates.web.security;
+package com.github.kshashov.translates.web.exceptions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kshashov.translates.web.exceptions.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -19,8 +18,10 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse,
                          AuthenticationException e) throws IOException, ServletException {
-        ErrorResponse response = new ErrorResponse(401, "Access Denied");
+        ErrorResponse response = new ErrorResponse("Access Denied");
         httpServletResponse.setStatus(401);
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setCharacterEncoding("UTF-8");
         OutputStream out = httpServletResponse.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(out, response);

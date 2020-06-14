@@ -1,12 +1,12 @@
-INSERT INTO permissions (id, code) VALUES (0, 'solve_exercises');
-INSERT INTO permissions (id, code) VALUES (1, 'comment_exercises');
-INSERT INTO permissions (id, code) VALUES (2, 'manage_exercises');
-INSERT INTO permissions (id, code) VALUES (3, 'manage_users');
+INSERT INTO permissions (id, code) VALUES (0, 'SOLVE_EXERCISES');
+INSERT INTO permissions (id, code) VALUES (1, 'COMMENT_EXERCISES');
+INSERT INTO permissions (id, code) VALUES (2, 'MANAGE_EXERCISES');
+INSERT INTO permissions (id, code) VALUES (3, 'MANAGE_USERS');
 
-INSERT INTO roles (id, code, title, description) VALUES (0, 'inactive', 'Inactive', '');
-INSERT INTO roles (id, code, title, description) VALUES (1, 'user', 'User', '');
-INSERT INTO roles (id, code, title, description) VALUES (2, 'moderator', 'Moderator', '');
-INSERT INTO roles (id, code, title, description) VALUES (3, 'admin', 'Admin', '');
+INSERT INTO roles (id, code, title, description) VALUES (0, 'INACTIVE', 'Inactive', '');
+INSERT INTO roles (id, code, title, description) VALUES (1, 'USER', 'User', '');
+INSERT INTO roles (id, code, title, description) VALUES (2, 'MODERATOR', 'Moderator', '');
+INSERT INTO roles (id, code, title, description) VALUES (3, 'ADMIN', 'Admin', '');
 
 -- inactive
 INSERT INTO roles_permissions (role_id, permission_id) VALUES (0, 0);

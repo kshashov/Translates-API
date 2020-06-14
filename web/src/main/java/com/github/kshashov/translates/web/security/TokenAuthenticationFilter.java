@@ -5,6 +5,8 @@ import com.github.kshashov.translates.data.repos.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -37,18 +40,36 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Long userId = tokenProvider.getUserIdFromToken(jwt);
-                // TODO add authorities
-                User userDetails = usersRepository.findWithPermissionsById(userId);
-                UserPrincipal principal = () -> userDetails;
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, new ArrayList<>());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                setAuthentication(request, userId);
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void setAuthentication(HttpServletRequest request, Long userId) {
+        User userDetails = usersRepository.findWithPermissionsById(userId).orElse(null);
+        if (userDetails == null) {
+            return;
+        }
+
+        // Extract authorities
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + userDetails.getRole().getCode()));
+        userDetails.getRole().getPermissions().stream()
+                .map(p -> new SimpleGrantedAuthority(p.getCode()))
+                .forEach(authorities::add);
+
+        // Create principal
+        UserPrincipal principal = () -> userDetails;
+
+        // Create authentification
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, authorities);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

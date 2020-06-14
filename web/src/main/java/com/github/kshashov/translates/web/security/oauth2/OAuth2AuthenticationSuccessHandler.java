@@ -1,7 +1,6 @@
 package com.github.kshashov.translates.web.security.oauth2;
 
 import com.github.kshashov.translates.web.AppProperties;
-import com.github.kshashov.translates.web.exceptions.BadRequestException;
 import com.github.kshashov.translates.web.security.TokenProvider;
 import com.github.kshashov.translates.web.utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
-    OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties,
-                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
+    OAuth2AuthenticationSuccessHandler(
+            TokenProvider tokenProvider,
+            AppProperties appProperties,
+            HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
         this.tokenProvider = tokenProvider;
         this.appProperties = appProperties;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
@@ -48,9 +49,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Optional<String> redirectUri = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
 
-        if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            throw new BadRequestException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
-        }
+//        if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
+//            throw new BadRequestException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
+//        }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 

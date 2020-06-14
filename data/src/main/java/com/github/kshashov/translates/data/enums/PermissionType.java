@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PermissionType {
-    SOLVE_EXERCISES("solve_exercises"),
-    COMMENT_EXERCISES("comment_exercises"),
-    MANAGE_EXERCISES("manage_exercises"),
-    EDIT_PROJECT_USERS("edit_project_users");
+    SOLVE_EXERCISES("SOLVE_EXERCISES"),
+    COMMENT_EXERCISES("COMMENT_EXERCISES"),
+    MANAGE_EXERCISES("MANAGE_EXERCISES"),
+    MANAGE_USERS("MANAGE_USERS");
 
     private final String code;
 }

@@ -35,6 +35,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User updateFacebookUser(Map attributes) {
         var email = (String) attributes.get("email");
         var name = StringUtils.defaultString((String) attributes.get("name"));
+        if (name.length() < 3) {
+            name = "NoName";
+        }
 //        var picture = (String) attributes.get("picture");
 //        var id = (String) attributes.get("sub");
 

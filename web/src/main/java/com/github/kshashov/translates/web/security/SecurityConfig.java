@@ -1,5 +1,6 @@
 package com.github.kshashov.translates.web.security;
 
+import com.github.kshashov.translates.web.exceptions.RestAuthenticationEntryPoint;
 import com.github.kshashov.translates.web.security.oauth2.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -71,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**")
+                .antMatchers("/auth/**", "/oauth2/**", "/test/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
