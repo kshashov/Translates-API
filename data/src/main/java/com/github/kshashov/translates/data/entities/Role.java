@@ -36,7 +36,7 @@ public class Role implements BaseEntity {
     private String description;
 
     @NotNull
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "roles_permissions",
             schema = "public",

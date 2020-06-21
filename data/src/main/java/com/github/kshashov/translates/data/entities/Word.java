@@ -9,16 +9,22 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-@Table(name = "permissions", schema = "public", uniqueConstraints = {
-        @UniqueConstraint(name = "permissions_unique_code", columnNames = "code")
-})
-public class Permission implements BaseEntity {
+@Table(name = "words", schema = "public")
+public class Word {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @NotNull
-    @Column(name = "code", unique = true)
-    private String code;
+    @Column(name = "source")
+    private String source;
+
+    @NotNull
+    @Column(name = "translation")
+    private String translation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "step_id")
+    private Step step;
 }

@@ -28,14 +28,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class SecuredUsersServiceImpl implements SecuredUsersService {
+public class ApiUsersServiceImpl implements ApiUsersService {
     private final UsersService usersService;
     private final UsersRepository usersRepository;
     private final PermissionsRepository permissionsRepository;
     private final RolesRepository rolesRepository;
 
     @Autowired
-    public SecuredUsersServiceImpl(UsersService usersService, UsersRepository usersRepository, PermissionsRepository permissionsRepository, RolesRepository rolesRepository) {
+    public ApiUsersServiceImpl(UsersService usersService, UsersRepository usersRepository, PermissionsRepository permissionsRepository, RolesRepository rolesRepository) {
         this.usersService = usersService;
         this.usersRepository = usersRepository;
         this.permissionsRepository = permissionsRepository;

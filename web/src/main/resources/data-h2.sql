@@ -34,3 +34,15 @@ INSERT INTO users (id, email, name, role_id) VALUES (6, 'envoy93@gmail.com6', 'u
 INSERT INTO users (id, email, name, role_id) VALUES (7, 'envoy93@gmail.com7', 'user', 3);
 INSERT INTO users (id, email, name, role_id) VALUES (8, 'envoy93@gmail.com8', 'user', 3);
 INSERT INTO users (id, email, name, role_id) VALUES (9, 'envoy93@gmail.com9', 'user', 3);
+
+INSERT INTO languages (id, code, title) VALUES (0, 'RU', 'Russian');
+INSERT INTO languages (id, code, title) VALUES (1, 'EN', 'English');
+
+INSERT INTO tags (id, title) VALUES (0, 'Verbs');
+INSERT INTO tags (id, title) VALUES (1, 'Tenses');
+INSERT INTO tags (id, title) VALUES (2, 'Noons');
+
+INSERT INTO exercises (id, creator_id, from_id, to_id, title) VALUES (0, 0, 0, 1, 'test exercise');
+
+INSERT INTO exercises_tags (exercise_id, tag_id) VALUES (0, 0);
+INSERT INTO exercises_tags (exercise_id, tag_id) VALUES (0, 1);

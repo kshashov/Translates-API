@@ -59,9 +59,12 @@ public class UsersAdminServiceImpl implements UsersAdminService {
     }
 
     private User createUser(String email, String name) {
-        // Check email only
         if (StringUtils.isBlank(email)) {
             throw new BadRequestException("Email is empty");
+        }
+
+        if (StringUtils.isBlank(name)) {
+            throw new BadRequestException("Name is empty");
         }
 
         User user = new User();

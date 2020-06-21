@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SecuredRolesServiceImpl implements SecuredRolesService {
+public class ApiRolesServiceImpl implements ApiRolesService {
     private final RolesRepository rolesRepository;
 
     @Autowired
-    public SecuredRolesServiceImpl(RolesRepository rolesRepository) {
+    public ApiRolesServiceImpl(RolesRepository rolesRepository) {
         this.rolesRepository = rolesRepository;
     }
 

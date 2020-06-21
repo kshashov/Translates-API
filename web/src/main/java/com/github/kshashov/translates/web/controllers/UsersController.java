@@ -1,7 +1,7 @@
 package com.github.kshashov.translates.web.controllers;
 
 import com.github.kshashov.translates.web.dto.*;
-import com.github.kshashov.translates.web.services.SecuredUsersService;
+import com.github.kshashov.translates.web.services.ApiUsersService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +16,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/users")
 public class UsersController {
-    private final SecuredUsersService userService;
+    private final ApiUsersService userService;
 
     @Autowired
-    public UsersController(SecuredUsersService userService) {
+    public UsersController(ApiUsersService userService) {
         this.userService = userService;
     }
 
@@ -46,14 +46,23 @@ public class UsersController {
         userService.updateUserRole(userId, userRoleInfo.getId());
     }
 
-    @GetMapping("/")
-    public Paged<User> getUsers(@RequestParam("page") int page, @RequestParam("size") int size, @RequestParam("filter") String filter, @RequestParam("sort") String sort, @RequestParam("direction") String direction) throws InterruptedException {
-        Thread.sleep(2000);
+    @GetMapping("")
+    public Paged<User> getUsers(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam(value = "filter", required = false) String filter,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "direction", required = false) String direction
+    ) throws InterruptedException {
+        Thread.sleep(1000);
         if (StringUtils.isBlank(sort)) {
             sort = "name";
         }
         if (StringUtils.isBlank(direction)) {
             direction = "asc";
+        }
+        if (size < 1) {
+            size = Integer.MAX_VALUE;
         }
 
         return userService.getUsers(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort)), filter);

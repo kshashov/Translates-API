@@ -1,0 +1,108 @@
+package com.github.kshashov.translates.web.services;
+
+import com.github.kshashov.translates.common.errors.NotFoundException;
+import com.github.kshashov.translates.data.entities.User;
+import com.github.kshashov.translates.data.repos.ExercisesRepository;
+import com.github.kshashov.translates.data.services.ExercisesService;
+import com.github.kshashov.translates.web.dto.Exercise;
+import com.github.kshashov.translates.web.dto.ExerciseInfo;
+import com.github.kshashov.translates.web.dto.Paged;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
+
+@Service
+public class ApiExercisesServiceImpl implements ApiExercisesService {
+    private final ExercisesRepository repository;
+    private final ExercisesService service;
+
+    @Autowired
+    public ApiExercisesServiceImpl(ExercisesRepository repository, ExercisesService service) {
+        this.repository = repository;
+        this.service = service;
+    }
+
+    @Override
+    public Paged<Exercise> getExercises(Pageable pageable, String filter, Long from, Long to, Long tag) {
+        Specification<com.github.kshashov.translates.data.entities.Exercise> spec = (Specification<com.github.kshashov.translates.data.entities.Exercise>) (root, query, criteriaBuilder) -> {
+
+            Predicate titleLike = criteriaBuilder
+                    .like(
+                            criteriaBuilder.upper(root.get("title")),
+                            "%" + filter.toUpperCase() + "%");
+
+            Join<Exercise, User> userJoin = root.join("creator");
+            Predicate creatorLike = criteriaBuilder
+                    .like(
+                            criteriaBuilder.upper(userJoin.get("name")),
+                            "%" + filter.toUpperCase() + "%");
+
+            Predicate filterLike = StringUtils.isBlank(filter)
+                    ? criteriaBuilder.conjunction()
+                    : criteriaBuilder.or(titleLike, creatorLike);
+
+            Predicate fromEquals = from == null
+                    ? criteriaBuilder.conjunction()
+                    : criteriaBuilder.equal(root.get("from"), from);
+
+            Predicate toEquals = to == null
+                    ? criteriaBuilder.conjunction()
+                    : criteriaBuilder.equal(root.get("to"), to);
+
+            Predicate tagEquals = tag == null
+                    ? criteriaBuilder.conjunction()
+                    : criteriaBuilder.isMember(tag, root.get("tags"));
+
+            return criteriaBuilder.and(filterLike, fromEquals, toEquals, tagEquals);
+        };
+
+        return Paged.of(repository.findAll(spec, pageable), Exercise::of);
+    }
+
+    @Override
+    @PreAuthorize("(#info.creator == authentication.principal.user.id)")
+    public Exercise createExercise(ExerciseInfo info) {
+        Objects.requireNonNull(info);
+
+        ExercisesService.ExerciseInfo i = new ExercisesService.ExerciseInfo();
+        i.setFrom(info.getFrom());
+        i.setTo(info.getTo());
+        i.setTitle(info.getTitle());
+        i.setTags(info.getTags());
+        i.setCreator(info.getCreator());
+        com.github.kshashov.translates.data.entities.Exercise exercise = service.createExercise(i);
+        return Exercise.of(exercise);
+    }
+
+    @Override
+    public void updateExercise(Long id, ExerciseInfo info) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(info);
+
+        if (!repository.existsById(id)) {
+            throw new NotFoundException("Exercise is not found");
+        }
+
+        ExercisesService.ExerciseInfo i = new ExercisesService.ExerciseInfo();
+        i.setFrom(info.getFrom());
+        i.setTo(info.getTo());
+        i.setTitle(info.getTitle());
+        i.setTags(info.getTags());
+        i.setCreator(info.getCreator());
+        service.updateExercise(id, i);
+    }
+
+    @Override
+    public void delete(Long id) {
+        service.delete(id);
+    }
+
+
+}

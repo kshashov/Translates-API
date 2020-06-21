@@ -4,6 +4,6 @@ import com.github.kshashov.translates.web.dto.Role;
 
 import java.util.List;
 
-public interface SecuredRolesService {
+public interface ApiRolesService {
     List<Role> getRoles();
 }
