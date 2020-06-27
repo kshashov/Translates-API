@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,4 +21,7 @@ public class Tag implements BaseEntity {
     @NotNull
     @Column(name = "title")
     private String title;
+
+    @ManyToMany(mappedBy = "tags")
+    private List<Exercise> exercises;
 }

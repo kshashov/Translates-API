@@ -7,6 +7,7 @@ import com.github.kshashov.translates.data.repos.StepsRepository;
 import com.github.kshashov.translates.data.services.StepsService;
 import com.github.kshashov.translates.web.dto.Step;
 import com.github.kshashov.translates.web.dto.StepInfo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class ApiStepsServiceImpl implements ApiStepsService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority(T(com.github.kshashov.translates.data.enums.PermissionType).MANAGE_EXERCISES.getCode())")
     public List<Step> replaceExerciseSteps(Long exerciseId, List<StepInfo> info) {
         Objects.requireNonNull(exerciseId);
         Objects.requireNonNull(info);

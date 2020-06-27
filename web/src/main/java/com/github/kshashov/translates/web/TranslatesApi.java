@@ -1,5 +1,8 @@
 package com.github.kshashov.translates.web;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
@@ -12,9 +15,8 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.cache.transaction.TransactionAwareCacheManagerProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@EnableWebMvc
+//@EnableWebMvc
 @SpringBootApplication(scanBasePackages = "com.github.kshashov.translates")
 @EnableCaching
 //@EnableTransactionManagement
@@ -47,5 +49,12 @@ public class TranslatesApi {
     public CacheManager cacheManager() {
         CacheManager cacheManager = new ConcurrentMapCacheManager();
         return new TransactionAwareCacheManagerProxy(cacheManager);
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI().components(new Components()
+                .addSecuritySchemes("bearer",
+                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
     }
 }

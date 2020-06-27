@@ -3,6 +3,7 @@ package com.github.kshashov.translates.web.controllers;
 import com.github.kshashov.translates.web.dto.*;
 import com.github.kshashov.translates.web.services.ApiExercisesService;
 import com.github.kshashov.translates.web.services.ApiStepsService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -51,29 +52,38 @@ public class ExercisesController {
     }
 
     @PostMapping
+    @SecurityRequirement(name = "bearer")
     public Exercise createExercise(@RequestBody ExerciseInfo info) {
         return exercisesService.createExercise(info);
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearer")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void createExercise(@PathVariable("id") Long id, @RequestBody ExerciseInfo info) {
         exercisesService.updateExercise(id, info);
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearer")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteExercise(@PathVariable("id") Long id) {
         exercisesService.delete(id);
     }
 
     @GetMapping("/{id}/steps")
-    public List<Step> replaceExerciseSteps(@PathVariable("id") Long id) {
+    public List<Step> getExerciseSteps(@PathVariable("id") Long id) {
         return stepsService.getByExercise(id);
     }
 
     @PostMapping("/{id}/steps")
+    @SecurityRequirement(name = "bearer")
     public List<Step> replaceExerciseSteps(@PathVariable("id") Long id, @RequestBody List<StepInfo> info) {
         return stepsService.replaceExerciseSteps(id, info);
+    }
+
+    @GetMapping("/stats")
+    public ExercisesStats getExercisesStats() {
+        return exercisesService.getStats();
     }
 }

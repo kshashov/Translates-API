@@ -2,6 +2,7 @@ package com.github.kshashov.translates.web.services;
 
 import com.github.kshashov.translates.web.dto.Exercise;
 import com.github.kshashov.translates.web.dto.ExerciseInfo;
+import com.github.kshashov.translates.web.dto.ExercisesStats;
 import com.github.kshashov.translates.web.dto.Paged;
 import org.springframework.data.domain.Pageable;
 
@@ -13,4 +14,6 @@ public interface ApiExercisesService {
     void updateExercise(Long id, ExerciseInfo info);
 
     void delete(Long id);
+
+    ExercisesStats getStats();
 }

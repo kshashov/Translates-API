@@ -2,6 +2,7 @@ package com.github.kshashov.translates.web.controllers;
 
 import com.github.kshashov.translates.web.dto.*;
 import com.github.kshashov.translates.web.services.ApiUsersService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,29 +25,34 @@ public class UsersController {
     }
 
     @GetMapping("/me")
+    @SecurityRequirement(name = "bearer")
     public ResponseEntity<CurrentUser> getCurrentUser() {
         Optional<CurrentUser> user = userService.getCurrentUser();
         return ResponseEntity.of(user);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getCurrentUser(@PathVariable("userId") long userId) {
+    @SecurityRequirement(name = "bearer")
+    public ResponseEntity<User> getUser(@PathVariable("userId") long userId) {
         Optional<User> user = userService.getUser(userId);
         return ResponseEntity.of(user);
     }
 
     @PostMapping("/{userId}")
+    @SecurityRequirement(name = "bearer")
     public User updateUser(@PathVariable("userId") long userId, @Valid @RequestBody UserInfo userInfo) {
         return userService.updateUser(userId, userInfo);
     }
 
     @PostMapping("/{userId}/role")
+    @SecurityRequirement(name = "bearer")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable("userId") long userId, @Valid @RequestBody UserRoleInfo userRoleInfo) {
         userService.updateUserRole(userId, userRoleInfo.getId());
     }
 
     @GetMapping("")
+    @SecurityRequirement(name = "bearer")
     public Paged<User> getUsers(
             @RequestParam("page") int page,
             @RequestParam("size") int size,

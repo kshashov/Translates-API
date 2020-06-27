@@ -6,6 +6,7 @@ import com.github.kshashov.translates.data.repos.ExercisesRepository;
 import com.github.kshashov.translates.data.services.ExercisesService;
 import com.github.kshashov.translates.web.dto.Exercise;
 import com.github.kshashov.translates.web.dto.ExerciseInfo;
+import com.github.kshashov.translates.web.dto.ExercisesStats;
 import com.github.kshashov.translates.web.dto.Paged;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ApiExercisesServiceImpl implements ApiExercisesService {
@@ -33,20 +36,22 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
     public Paged<Exercise> getExercises(Pageable pageable, String filter, Long from, Long to, Long tag) {
         Specification<com.github.kshashov.translates.data.entities.Exercise> spec = (Specification<com.github.kshashov.translates.data.entities.Exercise>) (root, query, criteriaBuilder) -> {
 
-            Predicate titleLike = criteriaBuilder
-                    .like(
-                            criteriaBuilder.upper(root.get("title")),
-                            "%" + filter.toUpperCase() + "%");
+            Predicate filterLike = criteriaBuilder.conjunction();
 
-            Join<Exercise, User> userJoin = root.join("creator");
-            Predicate creatorLike = criteriaBuilder
-                    .like(
-                            criteriaBuilder.upper(userJoin.get("name")),
-                            "%" + filter.toUpperCase() + "%");
+            if (!StringUtils.isBlank(filter)) {
+                Predicate titleLike = criteriaBuilder
+                        .like(
+                                criteriaBuilder.upper(root.get("title")),
+                                "%" + filter.toUpperCase() + "%");
 
-            Predicate filterLike = StringUtils.isBlank(filter)
-                    ? criteriaBuilder.conjunction()
-                    : criteriaBuilder.or(titleLike, creatorLike);
+                Join<Exercise, User> userJoin = root.join("creator");
+                Predicate creatorLike = criteriaBuilder
+                        .like(
+                                criteriaBuilder.upper(userJoin.get("name")),
+                                "%" + filter.toUpperCase() + "%");
+
+                filterLike = criteriaBuilder.or(titleLike, creatorLike);
+            }
 
             Predicate fromEquals = from == null
                     ? criteriaBuilder.conjunction()
@@ -82,6 +87,7 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority(T(com.github.kshashov.translates.data.enums.PermissionType).MANAGE_EXERCISES.getCode())")
     public void updateExercise(Long id, ExerciseInfo info) {
         Objects.requireNonNull(id);
         Objects.requireNonNull(info);
@@ -100,8 +106,23 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority(T(com.github.kshashov.translates.data.enums.PermissionType).MANAGE_EXERCISES.getCode())")
     public void delete(Long id) {
         service.delete(id);
+    }
+
+    @Override
+    public ExercisesStats getStats() {
+        Map<Long, Long> byFrom = repository.countByFrom().stream()
+                .collect(Collectors.toMap(i -> i.getLangId(), i -> i.getCount()));
+
+        Map<Long, Long> byTo = repository.countByTo().stream()
+                .collect(Collectors.toMap(i -> i.getLangId(), i -> i.getCount()));
+
+        Map<Long, Long> byTags = repository.countByTags().stream()
+                .collect(Collectors.toMap(i -> i.getTagId(), i -> i.getCount()));
+
+        return new ExercisesStats(byFrom, byTo, byTags);
     }
 
 
