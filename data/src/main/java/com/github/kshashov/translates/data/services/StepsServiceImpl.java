@@ -6,6 +6,7 @@ import com.github.kshashov.translates.data.entities.Step;
 import com.github.kshashov.translates.data.entities.Word;
 import com.github.kshashov.translates.data.repos.ExercisesRepository;
 import com.github.kshashov.translates.data.repos.StepsRepository;
+import com.github.kshashov.translates.data.repos.UserAnswersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -21,11 +22,13 @@ import java.util.stream.Collectors;
 public class StepsServiceImpl implements StepsService {
     private final StepsRepository stepsRepository;
     private final ExercisesRepository exercisesRepository;
+    private final UserAnswersRepository userAnswersRepository;
 
     @Autowired
-    public StepsServiceImpl(StepsRepository stepsRepository, ExercisesRepository exercisesRepository) {
+    public StepsServiceImpl(StepsRepository stepsRepository, ExercisesRepository exercisesRepository, UserAnswersRepository userAnswersRepository) {
         this.stepsRepository = stepsRepository;
         this.exercisesRepository = exercisesRepository;
+        this.userAnswersRepository = userAnswersRepository;
     }
 
     @Override
@@ -36,7 +39,8 @@ public class StepsServiceImpl implements StepsService {
 
         Exercise exercise = exercisesRepository.getOne(exerciseId);
 
-        // Delete existing steps
+        // Delete existing answers and steps
+        userAnswersRepository.deleteAllByStepExerciseId(exerciseId);
         stepsRepository.deleteAllByExerciseId(exerciseId);
         stepsRepository.flush();
 

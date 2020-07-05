@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class ExerciseInfo {
-    @NotBlank(message = "Title is mandatory")
+    @NotBlank(message = "Title is empty")
     @Size(min = 3, max = 100)
     private String title;
     @NotNull

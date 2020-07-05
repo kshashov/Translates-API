@@ -8,6 +8,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class UserRoleInfo {
-    @NotNull(message = "Id is mandatory")
+    @NotNull(message = "User Role Id is required")
     private Long id;
 }

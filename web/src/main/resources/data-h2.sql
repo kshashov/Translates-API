@@ -46,3 +46,15 @@ INSERT INTO exercises (id, creator_id, from_id, to_id, title) VALUES (0, 0, 0, 1
 
 INSERT INTO exercises_tags (exercise_id, tag_id) VALUES (0, 0);
 INSERT INTO exercises_tags (exercise_id, tag_id) VALUES (0, 1);
+
+INSERT INTO steps (id, exercise_id, order_num, text) VALUES (0, 0, 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+INSERT INTO steps (id, exercise_id, order_num, text) VALUES (1, 0, 1, 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.');
+
+INSERT INTO answers (id, step_id, text) VALUES (0, 0, 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur');
+INSERT INTO answers (id, step_id, text) VALUES (1, 1, 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+INSERT INTO answers (id, step_id, text) VALUES (2, 1, 'Sint occaecat cupidatat non proident id est laborum.');
+
+INSERT INTO words (id, step_id, source, translation) VALUES (0, 0, 'aute', 'irure dolor');
+INSERT INTO words (id, step_id, source, translation) VALUES (1, 0, 'aute1', 'irure dolor1');
+INSERT INTO words (id, step_id, source, translation) VALUES (2, 1, 'excepteur', 'sint');
+INSERT INTO words (id, step_id, source, translation) VALUES (3, 1, 'excepteur1', 'sint1');

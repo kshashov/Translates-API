@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 public interface ApiExercisesService {
     Paged<Exercise> getExercises(Pageable title, String filter, Long from, Long to, Long tag);
 
+    Exercise getExercise(Long id);
+
     Exercise createExercise(ExerciseInfo info);
 
     void updateExercise(Long id, ExerciseInfo info);

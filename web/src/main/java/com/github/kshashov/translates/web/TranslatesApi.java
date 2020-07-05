@@ -16,6 +16,8 @@ import org.springframework.cache.transaction.TransactionAwareCacheManagerProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
+import java.util.TimeZone;
+
 //@EnableWebMvc
 @SpringBootApplication(scanBasePackages = "com.github.kshashov.translates")
 @EnableCaching
@@ -26,6 +28,7 @@ import org.springframework.core.env.Environment;
 public class TranslatesApi {
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Etc/UTC"));
         SpringApplication.run(TranslatesApi.class, args);
     }
 

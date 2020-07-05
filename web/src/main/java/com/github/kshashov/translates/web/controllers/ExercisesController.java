@@ -57,6 +57,11 @@ public class ExercisesController {
         return exercisesService.createExercise(info);
     }
 
+    @GetMapping("/{id}")
+    public Exercise getExercise(@PathVariable("id") Long id) {
+        return exercisesService.getExercise(id);
+    }
+
     @PutMapping("/{id}")
     @SecurityRequirement(name = "bearer")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

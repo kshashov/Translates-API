@@ -72,6 +72,18 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
     }
 
     @Override
+    public Exercise getExercise(Long id) {
+        Objects.requireNonNull(id);
+
+        if (!repository.existsById(id)) {
+            throw new NotFoundException("Exercise is not found");
+        }
+
+        com.github.kshashov.translates.data.entities.Exercise exercise = repository.findById(id).get();
+        return Exercise.of(exercise);
+    }
+
+    @Override
     @PreAuthorize("(#info.creator == authentication.principal.user.id)")
     public Exercise createExercise(ExerciseInfo info) {
         Objects.requireNonNull(info);

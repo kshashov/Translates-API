@@ -10,6 +10,6 @@ import javax.validation.constraints.Size;
 @Setter
 public class UserInfo {
     @Size(min = 3, max = 100)
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "User Name is empty")
     private String name;
 }

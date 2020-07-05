@@ -25,5 +25,4 @@ public interface ExercisesRepository extends JpaRepository<Exercise, Long>, JpaS
             "FROM Tag t LEFT JOIN t.exercises e " +
             "GROUP BY t.id")
     List<ByTags> countByTags();
-
 }
