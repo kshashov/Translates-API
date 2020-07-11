@@ -53,8 +53,7 @@ public class ApiUserAnswersServiceImpl implements ApiUserAnswersService {
         i.setText(StringUtils.normalizeSpace(info.getText()));
 
         // Check if answer is right
-        Long exerciseId = stepsRepository.findExerciseId(i.getStepId());
-        List<Answer> answers = answersRepository.findAllByStepExerciseId(exerciseId);
+        List<Answer> answers = answersRepository.findAllByStepId(i.getStepId());
         boolean success = answers.stream().anyMatch(a -> a.getText().equals(i.getText()));
         i.setSuccess(success);
 

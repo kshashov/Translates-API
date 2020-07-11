@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface AnswersRepository extends JpaRepository<Answer, Long>, BaseRepo {
-    List<Answer> findAllByStepExerciseId(@Param("exerciseId") Long exerciseId);
+    List<Answer> findAllByStepId(@Param("stepId") Long stepId);
 }

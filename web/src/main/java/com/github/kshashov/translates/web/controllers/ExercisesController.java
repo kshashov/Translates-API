@@ -51,6 +51,30 @@ public class ExercisesController {
                 filter, from, to, tag);
     }
 
+    @GetMapping("user")
+    public Paged<StatsExercise> getStatsExercises(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "direction", required = false) String direction,
+            @RequestParam(value = "from", required = false) Long from,
+            @RequestParam(value = "to", required = false) Long to,
+            @RequestParam(value = "tag", required = false) Long tag
+    ) {
+        if (StringUtils.isBlank(sort)) {
+            sort = "title";
+        }
+        if (StringUtils.isBlank(direction)) {
+            direction = "asc";
+        }
+        if (size < 1) {
+            size = Integer.MAX_VALUE;
+        }
+
+        return exercisesService.getExercisesWithStats(
+                PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort)), from, to, tag);
+    }
+
     @PostMapping
     @SecurityRequirement(name = "bearer")
     public Exercise createExercise(@RequestBody ExerciseInfo info) {

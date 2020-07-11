@@ -4,6 +4,7 @@ import com.github.kshashov.translates.data.entities.Exercise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,12 @@ public interface ExercisesRepository extends JpaRepository<Exercise, Long>, JpaS
             "FROM Tag t LEFT JOIN t.exercises e " +
             "GROUP BY t.id")
     List<ByTags> countByTags();
+
+    @Query("SELECT new com.github.kshashov.translates.data.repos.UserAnswersStats(e.id, s.id, a.success) " +
+            "FROM Exercise e " +
+            "LEFT JOIN Step s ON s.exercise.id = e.id " +
+            "LEFT JOIN UserAnswer a ON a.step.id = s.id AND a.identity.createdAt IN (SELECT MAX(a.identity.createdAt) FROM UserAnswer a WHERE a.step.id = s.id)" +
+            "GROUP BY e.id, s.id " +
+            "HAVING e.id in :ids")
+    List<UserAnswersStats> getUserStats(@Param("ids") List<Long> ids);
 }

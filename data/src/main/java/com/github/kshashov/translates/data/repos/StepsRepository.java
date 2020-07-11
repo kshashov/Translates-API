@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface StepsRepository extends JpaRepository<Step, Long>, JpaSpecificationExecutor<Step>, BaseRepo {
-    @Query("SELECT s.exercise.id FROM Step s where s.id = stepId")
+    @Query("SELECT s.exercise.id FROM Step s where s.id = :stepId")
     Long findExerciseId(@Param("stepId") Long stepId);
 
     List<Step> findAllByExerciseIdOrderByOrder(@Param("exerciseId") Long exerciseId);

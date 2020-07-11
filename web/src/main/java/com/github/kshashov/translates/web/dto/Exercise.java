@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -11,24 +12,28 @@ import java.util.stream.Collectors;
 public class Exercise {
     private Long id;
     private String title;
-    private User creator;
+    private PublicUser creator;
     private Lang from;
     private Lang to;
     private List<Tag> tags;
 
-    public static Exercise of(com.github.kshashov.translates.data.entities.Exercise exercise) {
+    protected static Exercise of(Exercise instance, com.github.kshashov.translates.data.entities.Exercise exercise) {
+        Objects.requireNonNull(instance);
         if (exercise == null) return null;
 
-        Exercise e = new Exercise();
-        e.setId(exercise.getId());
-        e.setTitle(exercise.getTitle());
-        e.setCreator(User.of(exercise.getCreator()));
-        e.setFrom(Lang.of(exercise.getFrom()));
-        e.setTo(Lang.of(exercise.getTo()));
-        e.setTags(exercise.getTags()
+        instance.setId(exercise.getId());
+        instance.setTitle(exercise.getTitle());
+        instance.setCreator(PublicUser.of(exercise.getCreator()));
+        instance.setFrom(Lang.of(exercise.getFrom()));
+        instance.setTo(Lang.of(exercise.getTo()));
+        instance.setTags(exercise.getTags()
                 .stream()
                 .map(Tag::of)
                 .collect(Collectors.toList()));
-        return e;
+        return instance;
+    }
+
+    public static Exercise of(com.github.kshashov.translates.data.entities.Exercise exercise) {
+        return of(new Exercise(), exercise);
     }
 }

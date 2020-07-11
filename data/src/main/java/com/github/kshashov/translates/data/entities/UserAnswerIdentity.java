@@ -22,6 +22,7 @@ public class UserAnswerIdentity implements Serializable {
     @Column(name = "step_id", updatable = false)
     private Long stepId;
 
+    @NotNull
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 }
