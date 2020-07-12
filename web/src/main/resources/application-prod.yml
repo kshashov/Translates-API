@@ -22,9 +22,11 @@ spring:
           google:
             client-id: ENC(AawMWo0dFZ/9ARqPgpGROraruN2fFZpFBIx2GgGPASxqKS3B3I/q327uum4t+jPa+KHbitHg0zGPjsBN0BClLOhS00/NPht4NsWtK9lyxBssWcsa/mcbIUXUcGpGzlJvWKjbqOo4WtRaLVIjYsB7kw==)
             client-secret: ENC(551dwRULdc1RlHUUXVfHUWHtb1cukcYIH9pYg+VnmQRo4qPSt3dOTTLMXmVi6J5mszdxeVWNH3zQ4552Uo0ozw==)
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
           github:
             client-id: ENC(+ul6x0ML9N+gJJyYrMxgq74wK++UAyAROzDKHZPfiiHzFzQMxryNp+eAunePZcBDQCGVAVNDsZvqyfR9t+6T6A==)
             client-secret: ENC(+ul6x0ML9N+gJJyYrMxgq74wK++UAyAROzDKHZPfiiHzFzQMxryNp+eAunePZcBDQCGVAVNDsZvqyfR9t+6T6A==)
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
 
   mvc:
     throw-exception-if-no-handler-found: true
