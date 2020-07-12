@@ -20,12 +20,12 @@ spring:
       client:
         registration:
           google:
-            client-id: ENC(AawMWo0dFZ/9ARqPgpGROraruN2fFZpFBIx2GgGPASxqKS3B3I/q327uum4t+jPa+KHbitHg0zGPjsBN0BClLOhS00/NPht4NsWtK9lyxBssWcsa/mcbIUXUcGpGzlJvWKjbqOo4WtRaLVIjYsB7kw==)
-            client-secret: ENC(551dwRULdc1RlHUUXVfHUWHtb1cukcYIH9pYg+VnmQRo4qPSt3dOTTLMXmVi6J5mszdxeVWNH3zQ4552Uo0ozw==)
+            client-id: ENC(iwx4W0T/0Dj10G1pPNW8OwyfRek6oekyJH0CG/cQRMbPCxnJjBh3ztpomF6VN963pHgC3LNoOQw7gxM8PJ4Agxx7odj1gAUV2LYZ4f1FekKPsKQACMtk6Mvs27G93/Kw2/I1y3FMERaFtmf/4yLtPQ==)
+            client-secret: ENC(Jub8pgjK0BTwxcy1yTrZKf1EvOm3znqgbkqbEIXWM/SqKGMTntd58rzqnvtyS3E+5VHgTydwZH8Meb0IHGSU0w==)
             redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
           github:
-            client-id: ENC(+ul6x0ML9N+gJJyYrMxgq74wK++UAyAROzDKHZPfiiHzFzQMxryNp+eAunePZcBDQCGVAVNDsZvqyfR9t+6T6A==)
-            client-secret: ENC(+ul6x0ML9N+gJJyYrMxgq74wK++UAyAROzDKHZPfiiHzFzQMxryNp+eAunePZcBDQCGVAVNDsZvqyfR9t+6T6A==)
+            client-id: ENC(sh9TWCg9ajtKHnfYZTv/5Mt61SVjp1Otw6bVv6zL89XvEngL04VTuywxTqVavHXtY+mNJ8MdHvumvyNywJzNMg==)
+            client-secret: ENC(7urOpi5frnM7gcAm14+x4TifeiTPGhexA4Unh8fgpWaqoV9JqG/ec8GpFvQkwQbO424HicV2zfGY/Qbcst7bXgicAT2uNSUzSYjAgUQzRdI=)
             redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
 
   mvc:
