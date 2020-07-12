@@ -36,6 +36,7 @@ public class ApiUserAnswersServiceImpl implements ApiUserAnswersService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && (#userId == authentication.principal.user.id)")
     public Map<Long, List<UserAnswer>> getUserAnswersForExercise(Long exerciseId, Long userId) {
         return userAnswersRepository.findAllByStepExerciseIdAndIdentityUserIdOrderByIdentityCreatedAtAsc(exerciseId, userId).stream()
                 .map(UserAnswer::of)
@@ -43,7 +44,7 @@ public class ApiUserAnswersServiceImpl implements ApiUserAnswersService {
     }
 
     @Override
-    @PreAuthorize("(#info.userId == authentication.principal.user.id)")
+    @PreAuthorize("isAuthenticated() && (#info.userId == authentication.principal.user.id)")
     public UserAnswer createUserAnswer(UserAnswerInfo info) {
         Objects.requireNonNull(info);
 

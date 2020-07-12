@@ -3,9 +3,12 @@ package com.github.kshashov.translates.web.services;
 import com.github.kshashov.translates.common.errors.NotFoundException;
 import com.github.kshashov.translates.data.entities.User;
 import com.github.kshashov.translates.data.repos.ExercisesRepository;
+import com.github.kshashov.translates.data.repos.StepsStats;
 import com.github.kshashov.translates.data.repos.UserAnswersStats;
 import com.github.kshashov.translates.data.services.ExercisesService;
 import com.github.kshashov.translates.web.dto.*;
+import com.github.kshashov.translates.web.security.SecurityUtils;
+import com.github.kshashov.translates.web.security.UserPrincipal;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,7 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority(T(com.github.kshashov.translates.data.enums.PermissionType).MANAGE_EXERCISES.getCode())")
     public Paged<Exercise> getExercises(Pageable pageable, String filter, Long from, Long to, Long tag) {
         Specification<com.github.kshashov.translates.data.entities.Exercise> spec = (Specification<com.github.kshashov.translates.data.entities.Exercise>) (root, query, criteriaBuilder) -> {
 
@@ -98,21 +102,41 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
                 .map(Exercise::getId)
                 .collect(Collectors.toList());
 
-        List<UserAnswersStats> stats = repository.getUserStats(ids);
+        Long userId = SecurityUtils.getCurrentUser()
+                .map(UserPrincipal::getUser)
+                .map(User::getId).orElse(null);
 
-        // Group stats by exercises
-        Map<Long, MutablePair<Integer, Integer>> aggregatedStats = new HashMap<>();
-        for (UserAnswersStats eStats : stats) {
-            Long id = eStats.getExerciseId();
-            if (!aggregatedStats.containsKey(id)) {
-                aggregatedStats.put(id, new MutablePair<>(0, 0));
-            }
+        // Aggregated stats by exercises
+        Map<Long, MutablePair<Integer, Integer>> aggregatedStats;
 
-            MutablePair<Integer, Integer> aggregated = aggregatedStats.get(id);
-            aggregated.setLeft(aggregated.getLeft() + 1);
-            if ((eStats.getSuccess() != null) && eStats.getSuccess()) {
-                aggregated.setRight(aggregated.getRight() + 1);
+        if (userId != null) {
+            // Get stats with user answers data
+            aggregatedStats = new HashMap<>();
+            List<UserAnswersStats> stats = repository.getUserStats(userId, ids);
+
+            for (UserAnswersStats eStats : stats) {
+                Long id = eStats.getExerciseId();
+                if (!aggregatedStats.containsKey(id)) {
+                    aggregatedStats.put(id, new MutablePair<>(0, 0));
+                }
+
+                MutablePair<Integer, Integer> aggregated = aggregatedStats.get(id);
+                if (eStats.getStepId() != null) {
+                    aggregated.setLeft(aggregated.getLeft() + 1);
+                    if ((eStats.getSuccess() != null) && eStats.getSuccess()) {
+                        aggregated.setRight(aggregated.getRight() + 1);
+                    }
+                }
             }
+        } else {
+            // Get stats without user related data
+            List<StepsStats> stats = repository.getStepsStats(ids);
+
+            aggregatedStats = stats.stream()
+                    .collect(Collectors.toMap(
+                            StepsStats::getExerciseId,
+                            s -> new MutablePair<>(s.getStepsTotal().intValue(), 0)));
+
         }
 
         // Add stats to result
@@ -138,7 +162,7 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
     }
 
     @Override
-    @PreAuthorize("(#info.creator == authentication.principal.user.id)")
+    @PreAuthorize("isAuthenticated() && (#info.creator == authentication.principal.user.id)")
     public Exercise createExercise(ExerciseInfo info) {
         Objects.requireNonNull(info);
 
@@ -190,6 +214,4 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
 
         return new ExercisesStats(byFrom, byTo, byTags);
     }
-
-
 }

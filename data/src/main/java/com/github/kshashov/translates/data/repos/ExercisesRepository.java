@@ -30,8 +30,18 @@ public interface ExercisesRepository extends JpaRepository<Exercise, Long>, JpaS
     @Query("SELECT new com.github.kshashov.translates.data.repos.UserAnswersStats(e.id, s.id, a.success) " +
             "FROM Exercise e " +
             "LEFT JOIN Step s ON s.exercise.id = e.id " +
-            "LEFT JOIN UserAnswer a ON a.step.id = s.id AND a.identity.createdAt IN (SELECT MAX(a.identity.createdAt) FROM UserAnswer a WHERE a.step.id = s.id)" +
+            "LEFT JOIN UserAnswer a " +
+            "   ON a.identity.userId = :userId " +
+            "       AND a.step.id = s.id " +
+            "       AND a.identity.createdAt IN (SELECT MAX(a.identity.createdAt) FROM UserAnswer a WHERE a.identity.userId = :userId AND a.step.id = s.id)" +
             "GROUP BY e.id, s.id " +
             "HAVING e.id in :ids")
-    List<UserAnswersStats> getUserStats(@Param("ids") List<Long> ids);
+    List<UserAnswersStats> getUserStats(@Param("userId") Long userId, @Param("ids") List<Long> ids);
+
+    @Query("SELECT new com.github.kshashov.translates.data.repos.StepsStats(e.id, COUNT(s.id)) " +
+            "FROM Exercise e " +
+            "LEFT JOIN Step s ON s.exercise.id = e.id " +
+            "GROUP BY e.id " +
+            "HAVING e.id in :ids")
+    List<StepsStats> getStepsStats(@Param("ids") List<Long> ids);
 }

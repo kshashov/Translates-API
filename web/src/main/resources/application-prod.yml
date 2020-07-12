@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    # PostgreSQL credentials will be provided as env variables by heroku
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: never
+    # connection pool
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 2
+  jpa:
+    #    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate #none
+      show-sql: false
+  flyway:
+    locations: classpath:db/migration
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(AawMWo0dFZ/9ARqPgpGROraruN2fFZpFBIx2GgGPASxqKS3B3I/q327uum4t+jPa+KHbitHg0zGPjsBN0BClLOhS00/NPht4NsWtK9lyxBssWcsa/mcbIUXUcGpGzlJvWKjbqOo4WtRaLVIjYsB7kw==)
+            client-secret: ENC(551dwRULdc1RlHUUXVfHUWHtb1cukcYIH9pYg+VnmQRo4qPSt3dOTTLMXmVi6J5mszdxeVWNH3zQ4552Uo0ozw==)
+          github:
+            client-id: ENC(+ul6x0ML9N+gJJyYrMxgq74wK++UAyAROzDKHZPfiiHzFzQMxryNp+eAunePZcBDQCGVAVNDsZvqyfR9t+6T6A==)
+            client-secret: ENC(+ul6x0ML9N+gJJyYrMxgq74wK++UAyAROzDKHZPfiiHzFzQMxryNp+eAunePZcBDQCGVAVNDsZvqyfR9t+6T6A==)
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+app:
+  auth:
+    tokenSecret: ENC(S7PG/KWB3NPf/XP/bmnsuts7sft5rUH1lTvxJ8tMxu4Gpp5msSBjdsWyuZdqESZQ93Gmgvw3S5AVVIAqBoL/+U82wAjltY5IdAA1vPKSbYk=)
+    tokenExpirationMsec: 864000000
+
+jasypt:
+  encryptor:
+    bean: translatesStringEncryptor

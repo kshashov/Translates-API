@@ -43,6 +43,7 @@ public class ApiUsersServiceImpl implements ApiUsersService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public Optional<CurrentUser> getCurrentUser() {
         return SecurityUtils.getCurrentUser()
                 .map(UserPrincipal::getUser)
@@ -55,7 +56,7 @@ public class ApiUsersServiceImpl implements ApiUsersService {
                 });
     }
 
-    @PreAuthorize("(#userId == authentication.principal.user.id) " +
+    @PreAuthorize("(isAuthenticated() && (#userId == authentication.principal.user.id)) " +
             "or hasAuthority(T(com.github.kshashov.translates.data.enums.PermissionType).MANAGE_USERS.getCode())")
     public Optional<User> getUser(Long userId) {
         Objects.requireNonNull(userId);
@@ -94,7 +95,7 @@ public class ApiUsersServiceImpl implements ApiUsersService {
     }
 
     @Override
-    @PreAuthorize("#userId == authentication.principal.user.id")
+    @PreAuthorize("isAuthenticated() && (#userId == authentication.principal.user.id)")
     public User updateUser(Long userId, UserInfo userInfo) {
         Objects.requireNonNull(userId);
         Objects.requireNonNull(userInfo);

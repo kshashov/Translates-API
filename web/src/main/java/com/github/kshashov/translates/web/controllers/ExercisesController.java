@@ -51,7 +51,7 @@ public class ExercisesController {
                 filter, from, to, tag);
     }
 
-    @GetMapping("user")
+    @GetMapping("public")
     public Paged<StatsExercise> getStatsExercises(
             @RequestParam("page") int page,
             @RequestParam("size") int size,
