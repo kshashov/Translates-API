@@ -29,10 +29,12 @@ public class Step {
 
     @NotNull
     @OneToMany(mappedBy = "step", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("text ASC")
     private Set<Answer> answers;
 
     @NotNull
     @OneToMany(mappedBy = "step", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("source ASC")
     private Set<Word> words;
 
     @NotNull

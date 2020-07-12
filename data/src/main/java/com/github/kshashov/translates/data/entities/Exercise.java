@@ -45,5 +45,6 @@ public class Exercise implements BaseEntity {
             schema = "public",
             joinColumns = {@JoinColumn(name = "exercise_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    @OrderBy("title ASC")
     private Set<Tag> tags;
 }

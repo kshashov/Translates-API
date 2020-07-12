@@ -42,5 +42,6 @@ public class Role implements BaseEntity {
             schema = "public",
             joinColumns = {@JoinColumn(name = "role_id")},
             inverseJoinColumns = {@JoinColumn(name = "permission_id")})
+    @OrderBy("code ASC")
     private Set<Permission> permissions;
 }
