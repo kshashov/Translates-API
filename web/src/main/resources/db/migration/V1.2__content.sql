@@ -1,26 +1,46 @@
 --tags
-INSERT INTO tags (id, title) VALUES ('Adjectives');
-INSERT INTO tags (id, title) VALUES ('Adverbs');
-INSERT INTO tags (id, title) VALUES ('Direct and Indirect Speech');
-INSERT INTO tags (id, title) VALUES ('Infinitive');
-INSERT INTO tags (id, title) VALUES ('Interrogative');
-INSERT INTO tags (id, title) VALUES ('Nouns');
-INSERT INTO tags (id, title) VALUES ('Passive');
-INSERT INTO tags (id, title) VALUES ('Possessive');
-INSERT INTO tags (id, title) VALUES ('Pronouns');
-INSERT INTO tags (id, title) VALUES ('Punctuation');
-INSERT INTO tags (id, title) VALUES ('Relative Clauses');
-INSERT INTO tags (id, title) VALUES ('Verbs and Tenses');
+INSERT INTO tags (title)
+VALUES ('Adjectives');
+INSERT INTO tags (title)
+VALUES ('Adverbs');
+INSERT INTO tags (title)
+VALUES ('Direct and Indirect Speech');
+INSERT INTO tags (title)
+VALUES ('Infinitive');
+INSERT INTO tags (title)
+VALUES ('Interrogative');
+INSERT INTO tags (title)
+VALUES ('Nouns');
+INSERT INTO tags (title)
+VALUES ('Passive');
+INSERT INTO tags (title)
+VALUES ('Possessive');
+INSERT INTO tags (title)
+VALUES ('Pronouns');
+INSERT INTO tags (title)
+VALUES ('Punctuation');
+INSERT INTO tags (title)
+VALUES ('Relative Clauses');
+INSERT INTO tags (title)
+VALUES ('Verbs and Tenses');
 
 -- langs
-INSERT INTO languages (code, title) VALUES ('AF', 'Afrikaans');
-INSERT INTO languages (code, title) VALUES ('SQ', 'Albanian');
-INSERT INTO languages (code, title) VALUES ('AR', 'Arabic');
-INSERT INTO languages (code, title) VALUES ('HY', 'Armenian');
-INSERT INTO languages (code, title) VALUES ('AS', 'Assamese');
-INSERT INTO languages (code, title) VALUES ('AZ', 'Azerbaijani');
-INSERT INTO languages (code, title) VALUES ('EU', 'Basque');
-INSERT INTO languages (code, title) VALUES ('BE', 'Belarusian');
+INSERT INTO languages (code, title)
+VALUES ('AF', 'Afrikaans');
+INSERT INTO languages (code, title)
+VALUES ('SQ', 'Albanian');
+INSERT INTO languages (code, title)
+VALUES ('AR', 'Arabic');
+INSERT INTO languages (code, title)
+VALUES ('HY', 'Armenian');
+INSERT INTO languages (code, title)
+VALUES ('AS', 'Assamese');
+INSERT INTO languages (code, title)
+VALUES ('AZ', 'Azerbaijani');
+INSERT INTO languages (code, title)
+VALUES ('EU', 'Basque');
+INSERT INTO languages (code, title)
+VALUES ('BE', 'Belarusian');
 INSERT INTO languages (code, title) VALUES ('BN', 'Bengali');
 INSERT INTO languages (code, title) VALUES ('BS', 'Bosnian');
 INSERT INTO languages (code, title) VALUES ('BR', 'Breton');
