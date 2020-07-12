@@ -34,7 +34,7 @@ public interface ExercisesRepository extends JpaRepository<Exercise, Long>, JpaS
             "   ON a.identity.userId = :userId " +
             "       AND a.step.id = s.id " +
             "       AND a.identity.createdAt IN (SELECT MAX(a.identity.createdAt) FROM UserAnswer a WHERE a.identity.userId = :userId AND a.step.id = s.id)" +
-            "GROUP BY e.id, s.id " +
+            "GROUP BY e.id, s.id, a.success " +
             "HAVING e.id in :ids")
     List<UserAnswersStats> getUserStats(@Param("userId") Long userId, @Param("ids") List<Long> ids);
 
