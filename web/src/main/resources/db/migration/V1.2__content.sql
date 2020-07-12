@@ -41,38 +41,69 @@ INSERT INTO languages (code, title)
 VALUES ('EU', 'Basque');
 INSERT INTO languages (code, title)
 VALUES ('BE', 'Belarusian');
-INSERT INTO languages (code, title) VALUES ('BN', 'Bengali');
-INSERT INTO languages (code, title) VALUES ('BS', 'Bosnian');
-INSERT INTO languages (code, title) VALUES ('BR', 'Breton');
-INSERT INTO languages (code, title) VALUES ('BG', 'Bulgarian');
-INSERT INTO languages (code, title) VALUES ('MY', 'Burmese');
-INSERT INTO languages (code, title) VALUES ('CA', 'Catalan / Valencian');
-INSERT INTO languages (code, title) VALUES ('CS', 'Czech');
-INSERT INTO languages (code, title) VALUES ('DA', 'Danish');
-INSERT INTO languages (code, title) VALUES ('NL', 'Dutch');
-INSERT INTO languages (code, title) VALUES ('EN', 'English');
+INSERT INTO languages (code, title)
+VALUES ('BN', 'Bengali');
+INSERT INTO languages (code, title)
+VALUES ('BS', 'Bosnian');
+INSERT INTO languages (code, title)
+VALUES ('BR', 'Breton');
+INSERT INTO languages (code, title)
+VALUES ('BG', 'Bulgarian');
+INSERT INTO languages (code, title)
+VALUES ('MY', 'Burmese');
+INSERT INTO languages (code, title)
+VALUES ('CA', 'Catalan / Valencian');
+INSERT INTO languages (code, title)
+VALUES ('CS', 'Czech');
+INSERT INTO languages (code, title)
+VALUES ('DA', 'Danish');
+INSERT INTO languages (code, title)
+VALUES ('NL', 'Dutch');
+INSERT INTO languages (code, title)
+VALUES ('EN', 'English');
 INSERT INTO languages (code, title) VALUES ('EO', 'Esperanto');
-INSERT INTO languages (code, title) VALUES ('ET', 'Estonian');
-INSERT INTO languages (code, title) VALUES ('FO_FO', 'Faroese');
-INSERT INTO languages (code, title) VALUES ('FI', 'Finnish');
-INSERT INTO languages (code, title) VALUES ('FR', 'French');
-INSERT INTO languages (code, title) VALUES ('GL', 'Galician');
-INSERT INTO languages (code, title) VALUES ('KA', 'Georgian');
-INSERT INTO languages (code, title) VALUES ('DE', 'German');
-INSERT INTO languages (code, title) VALUES ('EL', 'Greek');
-INSERT INTO languages (code, title) VALUES ('GN', 'Guarani');
-INSERT INTO languages (code, title) VALUES ('GU', 'Gujarati');
-INSERT INTO languages (code, title) VALUES ('HR', 'Hausa');
-INSERT INTO languages (code, title) VALUES ('HA', 'Hausa');
-INSERT INTO languages (code, title) VALUES ('HE', 'Hebrew');
-INSERT INTO languages (code, title) VALUES ('HI', 'Hindi');
-INSERT INTO languages (code, title) VALUES ('HU', 'Hungarian');
-INSERT INTO languages (code, title) VALUES ('IS', 'Icelandic');
-INSERT INTO languages (code, title) VALUES ('ID', 'Indonesian');
-INSERT INTO languages (code, title) VALUES ('GA', 'Irish');
-INSERT INTO languages (code, title) VALUES ('IT', 'Italian');
-INSERT INTO languages (code, title) VALUES ('JA', 'Japanese (Kansai)');
-INSERT INTO languages (code, title) VALUES ('JV', 'Javanese');
+INSERT INTO languages (code, title)
+VALUES ('ET', 'Estonian');
+INSERT INTO languages (code, title)
+VALUES ('FO_FO', 'Faroese');
+INSERT INTO languages (code, title)
+VALUES ('FI', 'Finnish');
+INSERT INTO languages (code, title)
+VALUES ('FR', 'French');
+INSERT INTO languages (code, title)
+VALUES ('GL', 'Galician');
+INSERT INTO languages (code, title)
+VALUES ('KA', 'Georgian');
+INSERT INTO languages (code, title)
+VALUES ('DE', 'German');
+INSERT INTO languages (code, title)
+VALUES ('EL', 'Greek');
+INSERT INTO languages (code, title)
+VALUES ('GN', 'Guarani');
+INSERT INTO languages (code, title)
+VALUES ('GU', 'Gujarati');
+INSERT INTO languages (code, title)
+VALUES ('HR', 'Croatian');
+INSERT INTO languages (code, title)
+VALUES ('HA', 'Hausa');
+INSERT INTO languages (code, title)
+VALUES ('HE', 'Hebrew');
+INSERT INTO languages (code, title)
+VALUES ('HI', 'Hindi');
+INSERT INTO languages (code, title)
+VALUES ('HU', 'Hungarian');
+INSERT INTO languages (code, title)
+VALUES ('IS', 'Icelandic');
+INSERT INTO languages (code, title)
+VALUES ('ID', 'Indonesian');
+INSERT INTO languages (code, title)
+VALUES ('GA', 'Irish');
+INSERT INTO languages (code, title)
+VALUES ('IT', 'Italian');
+INSERT INTO languages (code, title)
+VALUES ('JA', 'Japanese (Kansai)');
+INSERT INTO languages (code, title)
+VALUES ('JV', 'Javanese');
 INSERT INTO languages (code, title) VALUES ('KN', 'Kannada');
 INSERT INTO languages (code, title) VALUES ('KK', 'Kazakh');
 INSERT INTO languages (code, title) VALUES ('KM', 'Khmer');
