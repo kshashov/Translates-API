@@ -3,7 +3,6 @@ package com.github.kshashov.translates.web.security.oauth2;
 import com.github.kshashov.translates.data.entities.User;
 import com.github.kshashov.translates.data.services.UsersAdminService;
 import com.github.kshashov.translates.web.security.UserPrincipal;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -28,20 +27,26 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User auth2User = super.loadUser(userRequest);
         // TODO populate authorities?
-        User user = updateFacebookUser(auth2User.getAttributes());
+        String clientName = userRequest.getClientRegistration().getClientName().toLowerCase();
+        User user = updateOAuth2User(clientName, auth2User.getAttributes());
         return new CustomUser(auth2User, user);
     }
 
-    private User updateFacebookUser(Map attributes) {
-        var email = (String) attributes.get("email");
-        var name = StringUtils.defaultString((String) attributes.get("name"));
+    private User updateOAuth2User(String clientName, Map attributes) {
+        var sub = (String) attributes.getOrDefault("sub", "");
+        var email = (String) attributes.getOrDefault("email", "");
+        var name = (String) attributes.getOrDefault("name", "");
         if (name.length() < 3) {
             name = "NoName";
         }
 //        var picture = (String) attributes.get("picture");
-//        var id = (String) attributes.get("sub");
+        UsersAdminService.CreateUserInfo userInfo = new UsersAdminService.CreateUserInfo();
+        userInfo.setName(name);
+        userInfo.setEmail(email);
+        userInfo.setSub(sub);
+        userInfo.setClient(clientName);
 
-        User user = usersService.getOrCreateUser(email, name);
+        User user = usersService.getOrCreateUser(userInfo);
         return user;
     }
 

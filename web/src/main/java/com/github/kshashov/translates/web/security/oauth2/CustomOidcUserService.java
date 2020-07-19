@@ -3,7 +3,6 @@ package com.github.kshashov.translates.web.security.oauth2;
 import com.github.kshashov.translates.data.entities.User;
 import com.github.kshashov.translates.data.services.UsersAdminService;
 import com.github.kshashov.translates.web.security.UserPrincipal;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -30,17 +29,26 @@ public class CustomOidcUserService extends OidcUserService {
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         OidcUser oidcUser = super.loadUser(userRequest);
         // TODO populate authorities
-        User user = updateGoogleUser(oidcUser.getAttributes());
+        String clientName = userRequest.getClientRegistration().getClientName().toLowerCase();
+        User user = updateGoogleUser(clientName, oidcUser.getAttributes());
         return new CustomUser(oidcUser, user);
     }
 
-    private User updateGoogleUser(Map attributes) {
-        var email = (String) attributes.get("email");
-        var name = StringUtils.defaultString((String) attributes.get("name"));
+    private User updateGoogleUser(String clientName, Map attributes) {
+        var sub = (String) attributes.getOrDefault("sub", "");
+        var email = (String) attributes.getOrDefault("email", "");
+        var name = (String) attributes.getOrDefault("name", "");
+        if (name.length() < 3) {
+            name = "NoName";
+        }
 //        var picture = (String) attributes.get("picture");
-//        var id = (String) attributes.get("sub");
+        UsersAdminService.CreateUserInfo userInfo = new UsersAdminService.CreateUserInfo();
+        userInfo.setName(name);
+        userInfo.setEmail(email);
+        userInfo.setSub(sub);
+        userInfo.setClient(clientName);
 
-        User user = usersService.getOrCreateUser(email, name);
+        User user = usersService.getOrCreateUser(userInfo);
         return user;
     }
 

@@ -25,7 +25,7 @@ public class TestController {
 
     @GetMapping("/token")
     public String token() {
-        UserPrincipal userPrincipal = () -> usersRepository.findOneByEmail("envoy93@gmail.com").get();
+        UserPrincipal userPrincipal = () -> usersRepository.findById(0L).get();
         String token = tokenProvider.createToken(new UsernamePasswordAuthenticationToken(userPrincipal, null));
         return token;
     }

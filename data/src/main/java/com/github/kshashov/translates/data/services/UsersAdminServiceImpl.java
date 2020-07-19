@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -36,19 +37,21 @@ public class UsersAdminServiceImpl implements UsersAdminService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
-    public User getOrCreateUser(String email, String name) {
-        Optional<User> user = usersRepository.findOneByEmail(email);
+    public User getOrCreateUser(CreateUserInfo userInfo) {
+        Objects.requireNonNull(userInfo);
+
+        Optional<User> user = usersRepository.findOneByClientAndSub(userInfo.getClient(), userInfo.getSub());
 
         return user.orElseGet(() -> {
             try {
-                return createUser(email, name);
+                return createUser(userInfo);
             } catch (javax.validation.ConstraintViolationException ex) {
                 throw new BadRequestException("Invalid request", ex);
             } catch (DataIntegrityViolationException ex) {
                 if (ex.getCause() instanceof ConstraintViolationException) {
                     ConstraintViolationException casted = (ConstraintViolationException) ex.getCause();
-                    if ("users_unique_email".equals(casted.getConstraintName())) {
-                        throw new BadRequestException("User " + email + " already exists", ex);
+                    if ("users_unique_client_sub".equals(casted.getConstraintName())) {
+                        throw new BadRequestException("User already exists", ex);
                     } else {
                         throw new BadRequestException("Invalid request", ex);
                     }
@@ -58,18 +61,26 @@ public class UsersAdminServiceImpl implements UsersAdminService {
         });
     }
 
-    private User createUser(String email, String name) {
-        if (StringUtils.isBlank(email)) {
-            throw new BadRequestException("Email is empty");
+    private User createUser(CreateUserInfo userInfo) {
+        Objects.requireNonNull(userInfo);
+
+        if (StringUtils.isBlank(userInfo.getClient())) {
+            throw new BadRequestException("OAuth Client is empty");
         }
 
-        if (StringUtils.isBlank(name)) {
+        if (StringUtils.isBlank(userInfo.getSub())) {
+            throw new BadRequestException("User Id is empty");
+        }
+
+        if (StringUtils.isBlank(userInfo.getName())) {
             throw new BadRequestException("Name is empty");
         }
 
         User user = new User();
-        user.setName(name);
-        user.setEmail(email);
+        user.setName(userInfo.getName());
+        user.setEmail(userInfo.getEmail());
+        user.setSub(userInfo.getSub());
+        user.setClient(userInfo.getClient());
 
         // First user = admin, else = user
         Role role = usersRepository.count() == 0

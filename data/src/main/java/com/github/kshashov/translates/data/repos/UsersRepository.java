@@ -25,5 +25,5 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     @EntityGraph("User.permissions")
     Optional<User> findWithPermissionsById(Long id);
 
-    Optional<User> findOneByEmail(String email);
+    Optional<User> findOneByClientAndSub(@Param("client") String client, @Param("sub") String sub);
 }

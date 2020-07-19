@@ -8,5 +8,6 @@ import lombok.Setter;
 public class PublicUser {
     private Long id;
     private String name;
+    private String client;
     private Role role;
 }

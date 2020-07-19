@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "users", schema = "public", uniqueConstraints = {
-        @UniqueConstraint(name = "users_unique_email", columnNames = "email")
+        @UniqueConstraint(name = "users_unique_client_sub", columnNames = {"client", "sub"})
 })
 @NamedEntityGraph(name = "User.permissions",
         attributeNodes = {@NamedAttributeNode(value = "role", subgraph = "Role.permissions")},
@@ -29,6 +29,14 @@ public class User implements BaseEntity {
     @NotNull
     @Column(name = "name")
     private String name;
+
+    @NotNull
+    @Column(name = "sub")
+    private String sub;
+
+    @NotNull
+    @Column(name = "client")
+    private String client;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
