@@ -32,9 +32,9 @@ VALUES (3, 3);
 
 -- test data
 INSERT INTO users (id, email, name, client, sub, role_id)
-VALUES (0, 'envoy93@gmail.com', 'user', 'Google', '104208245098521472743', 3);
+VALUES (0, 'envoy93@gmail.com', 'user', 'google', '104208245098521472743', 3);
 INSERT INTO users (id, email, name, client, sub, role_id)
-VALUES (1, 'envoy93@gmail.com1', 'user1', 'Google', '1232', 3);
+VALUES (1, 'envoy93@gmail.com1', 'user1', 'google', '1232', 3);
 
 INSERT INTO languages (id, code, title)
 VALUES (0, 'RU', 'Russian');

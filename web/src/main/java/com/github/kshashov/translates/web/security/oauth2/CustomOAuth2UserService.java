@@ -32,8 +32,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return new CustomUser(auth2User, user);
     }
 
-    private User updateOAuth2User(String clientName, Map attributes) {
-        var sub = (String) attributes.getOrDefault("sub", "");
+    private User updateOAuth2User(String clientName, Map<String, Object> attributes) {
+
+        String sub = "";
+        if (clientName.equals("github")) {
+            // parse integer id
+            sub = String.valueOf(attributes.getOrDefault("id", ""));
+        } else {
+            sub = (String) attributes.getOrDefault("sub", "");
+        }
+
         var email = (String) attributes.getOrDefault("email", "");
         var name = (String) attributes.getOrDefault("name", "");
         if (name.length() < 3) {
@@ -49,6 +57,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user = usersService.getOrCreateUser(userInfo);
         return user;
     }
+
 
     private class CustomUser implements OAuth2User, UserPrincipal {
 

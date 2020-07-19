@@ -34,7 +34,7 @@ public class CustomOidcUserService extends OidcUserService {
         return new CustomUser(oidcUser, user);
     }
 
-    private User updateGoogleUser(String clientName, Map attributes) {
+    private User updateGoogleUser(String clientName, Map<String, Object> attributes) {
         var sub = (String) attributes.getOrDefault("sub", "");
         var email = (String) attributes.getOrDefault("email", "");
         var name = (String) attributes.getOrDefault("name", "");

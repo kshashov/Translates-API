@@ -39,9 +39,10 @@ spring:
             scope:
               - email
               - profile
-  #         github:
-  #           client-id: ENC(ZCJD2N0Dv4M0g0rwxoL/1ALEHvJcs8nldrnfRoQt4mqOnEyR9SCuCJAcQcFNc6vvJhhj1IidAYVRZs4K3q/s+A==)
-  #           client-secret: ENC(KNkDOygBNyteH2s4WDoQaNJ88FDht4G595CsV25PEogkQcbUDnUZaDZcF2RoJjP5dQBw18/691GyB07EW6TxcOtHiPQKVVypkxNad+CwUDI=)
+          github:
+            client-id: ENC(1CboBNyZJBdVMY+rtvq1+6rf2WWoYO9oOsqfLFJKPSGiG/fbIk1Nxmdfbac2cnnE8eyTBmYo1H0KTbYM+S4t1A==)
+            client-secret: ENC(26vov1AEbFpAhZNl3bfx25IiahOwRYEOFMxf7jW2PviTVHlz7gI1hikCt/PK6ZZfYPecQQCxFTnfyiDw3uTb8J58vdcdBLUurYFbgmBED9g=)
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
 
   flyway:
     enabled: false
