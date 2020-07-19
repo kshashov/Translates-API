@@ -8,7 +8,7 @@ import com.github.kshashov.translates.data.repos.UserAnswersRepository;
 import com.github.kshashov.translates.data.services.UserAnswersService;
 import com.github.kshashov.translates.web.dto.UserAnswer;
 import com.github.kshashov.translates.web.dto.UserAnswerInfo;
-import org.apache.commons.lang3.StringUtils;
+import com.github.kshashov.translates.web.dto.mappings.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -25,21 +25,23 @@ public class ApiUserAnswersServiceImpl implements ApiUserAnswersService {
     private final AnswersRepository answersRepository;
     private final StepsRepository stepsRepository;
     private final ExercisesRepository exercisesRepository;
+    private final DtoMapper mapper;
 
     @Autowired
-    public ApiUserAnswersServiceImpl(UserAnswersService userAnswersService, UserAnswersRepository userAnswersRepository, AnswersRepository answersRepository, StepsRepository stepsRepository, ExercisesRepository exercisesRepository) {
+    public ApiUserAnswersServiceImpl(UserAnswersService userAnswersService, UserAnswersRepository userAnswersRepository, AnswersRepository answersRepository, StepsRepository stepsRepository, ExercisesRepository exercisesRepository, DtoMapper mapper) {
         this.userAnswersService = userAnswersService;
         this.userAnswersRepository = userAnswersRepository;
         this.answersRepository = answersRepository;
         this.stepsRepository = stepsRepository;
         this.exercisesRepository = exercisesRepository;
+        this.mapper = mapper;
     }
 
     @Override
     @PreAuthorize("isAuthenticated() && (#userId == authentication.principal.user.id)")
     public Map<Long, List<UserAnswer>> getUserAnswersForExercise(Long exerciseId, Long userId) {
-        return userAnswersRepository.findAllByStepExerciseIdAndIdentityUserIdOrderByIdentityCreatedAtAsc(exerciseId, userId).stream()
-                .map(UserAnswer::of)
+        return mapper.toUserAnswer(userAnswersRepository.findAllByStepExerciseIdAndIdentityUserIdOrderByIdentityCreatedAtAsc(exerciseId, userId))
+                .stream()
                 .collect(Collectors.groupingBy(UserAnswer::getStepId));
     }
 
@@ -48,16 +50,14 @@ public class ApiUserAnswersServiceImpl implements ApiUserAnswersService {
     public UserAnswer createUserAnswer(UserAnswerInfo info) {
         Objects.requireNonNull(info);
 
-        UserAnswersService.UserAnswerInfo i = new UserAnswersService.UserAnswerInfo();
-        i.setUserId(info.getUserId());
-        i.setStepId(info.getStepId());
-        i.setText(StringUtils.normalizeSpace(info.getText()));
+//        info.setText(StringUtils.normalizeSpace(info.getText()));
+        UserAnswersService.UserAnswerInfo i = mapper.toUserAnswerInfo(info);
 
         // Check if answer is right
         List<Answer> answers = answersRepository.findAllByStepId(i.getStepId());
         boolean success = answers.stream().anyMatch(a -> a.getText().equals(i.getText()));
         i.setSuccess(success);
 
-        return UserAnswer.of(userAnswersService.createUserAnswer(i));
+        return mapper.toUserAnswer(userAnswersService.createUserAnswer(i));
     }
 }

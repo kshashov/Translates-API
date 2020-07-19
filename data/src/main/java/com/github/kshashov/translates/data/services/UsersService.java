@@ -11,7 +11,7 @@ public interface UsersService {
 
     @Getter
     @Setter
-    public class UserInfo {
+    class UserInfo {
         String name;
     }
 }

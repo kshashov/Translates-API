@@ -7,6 +7,7 @@ import com.github.kshashov.translates.data.repos.StepsStats;
 import com.github.kshashov.translates.data.repos.UserAnswersStats;
 import com.github.kshashov.translates.data.services.ExercisesService;
 import com.github.kshashov.translates.web.dto.*;
+import com.github.kshashov.translates.web.dto.mappings.DtoMapper;
 import com.github.kshashov.translates.web.security.SecurityUtils;
 import com.github.kshashov.translates.web.security.UserPrincipal;
 import org.apache.commons.lang3.StringUtils;
@@ -29,11 +30,13 @@ import java.util.stream.Collectors;
 public class ApiExercisesServiceImpl implements ApiExercisesService {
     private final ExercisesRepository repository;
     private final ExercisesService service;
+    private final DtoMapper mapper;
 
     @Autowired
-    public ApiExercisesServiceImpl(ExercisesRepository repository, ExercisesService service) {
+    public ApiExercisesServiceImpl(ExercisesRepository repository, ExercisesService service, DtoMapper mapper) {
         this.repository = repository;
         this.service = service;
+        this.mapper = mapper;
     }
 
     @Override
@@ -73,7 +76,7 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
             return criteriaBuilder.and(filterLike, fromEquals, toEquals, tagEquals);
         };
 
-        return Paged.of(repository.findAll(spec, pageable), Exercise::of);
+        return Paged.of(repository.findAll(spec, pageable), mapper::toExercise);
     }
 
     @Override
@@ -95,7 +98,7 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
             return criteriaBuilder.and(fromEquals, toEquals, tagEquals);
         };
 
-        Paged<StatsExercise> paged = Paged.of(repository.findAll(spec, pageable), StatsExercise::of);
+        Paged<StatsExercise> paged = Paged.of(repository.findAll(spec, pageable), mapper::toStatsExercise);
 
         // Get stats for user answers
         List<Long> ids = paged.getItems().stream()
@@ -158,7 +161,7 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
         }
 
         com.github.kshashov.translates.data.entities.Exercise exercise = repository.findById(id).get();
-        return Exercise.of(exercise);
+        return mapper.toExercise(exercise);
     }
 
     @Override
@@ -166,14 +169,9 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
     public Exercise createExercise(ExerciseInfo info) {
         Objects.requireNonNull(info);
 
-        ExercisesService.ExerciseInfo i = new ExercisesService.ExerciseInfo();
-        i.setFrom(info.getFrom());
-        i.setTo(info.getTo());
-        i.setTitle(info.getTitle());
-        i.setTags(info.getTags());
-        i.setCreator(info.getCreator());
+        ExercisesService.ExerciseInfo i = mapper.toExerciseInfo(info);
         com.github.kshashov.translates.data.entities.Exercise exercise = service.createExercise(i);
-        return Exercise.of(exercise);
+        return mapper.toExercise(exercise);
     }
 
     @Override
@@ -186,12 +184,7 @@ public class ApiExercisesServiceImpl implements ApiExercisesService {
             throw new NotFoundException("Exercise is not found");
         }
 
-        ExercisesService.ExerciseInfo i = new ExercisesService.ExerciseInfo();
-        i.setFrom(info.getFrom());
-        i.setTo(info.getTo());
-        i.setTitle(info.getTitle());
-        i.setTags(info.getTags());
-        i.setCreator(info.getCreator());
+        ExercisesService.ExerciseInfo i = mapper.toExerciseInfo(info);
         service.updateExercise(id, i);
     }
 

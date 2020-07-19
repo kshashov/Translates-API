@@ -2,26 +2,26 @@ package com.github.kshashov.translates.web.services;
 
 import com.github.kshashov.translates.data.repos.TagsRepository;
 import com.github.kshashov.translates.web.dto.Tag;
+import com.github.kshashov.translates.web.dto.mappings.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ApiTagsServiceImpl implements ApiTagsService {
     private final TagsRepository tagsRepository;
+    private final DtoMapper mapper;
 
     @Autowired
-    public ApiTagsServiceImpl(TagsRepository tagsRepository) {
+    public ApiTagsServiceImpl(TagsRepository tagsRepository, DtoMapper mapper) {
         this.tagsRepository = tagsRepository;
+        this.mapper = mapper;
     }
 
     @Override
     public List<Tag> getTags() {
-        return tagsRepository.findAll(Sort.by("title")).stream()
-                .map(Tag::of)
-                .collect(Collectors.toList());
+        return mapper.toTag(tagsRepository.findAll(Sort.by("title")));
     }
 }

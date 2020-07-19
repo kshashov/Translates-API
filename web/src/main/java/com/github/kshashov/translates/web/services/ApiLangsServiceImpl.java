@@ -2,26 +2,26 @@ package com.github.kshashov.translates.web.services;
 
 import com.github.kshashov.translates.data.repos.LanguagesRepository;
 import com.github.kshashov.translates.web.dto.Lang;
+import com.github.kshashov.translates.web.dto.mappings.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ApiLangsServiceImpl implements ApiLangsService {
     private final LanguagesRepository repository;
+    private final DtoMapper mapper;
 
     @Autowired
-    public ApiLangsServiceImpl(LanguagesRepository repository) {
+    public ApiLangsServiceImpl(LanguagesRepository repository, DtoMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Override
     public List<Lang> getLangs() {
-        return repository.findAll(Sort.by("code")).stream()
-                .map(Lang::of)
-                .collect(Collectors.toList());
+        return mapper.toLang(repository.findAll(Sort.by("code")));
     }
 }
