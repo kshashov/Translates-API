@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -57,9 +56,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String token = tokenProvider.createToken(authentication);
 
-        return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token)
-                .build().toUriString();
+//        return UriComponentsBuilder.fromUriString(targetUrl)
+//                .queryParam("token", token)
+//                .build().toUriString();
+        // TODO find a way to add query param to localhost/#/page/ url
+        return targetUrl + "&token=" + token;
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
